@@ -1,0 +1,569 @@
+{
+ "metadata": {
+  "name": ""
+ },
+ "nbformat": 3,
+ "nbformat_minor": 0,
+ "worksheets": [
+  {
+   "cells": [
+    {
+     "cell_type": "code",
+     "collapsed": false,
+     "input": [
+      "import json\n"
+     ],
+     "language": "python",
+     "metadata": {},
+     "outputs": [],
+     "prompt_number": 1
+    },
+    {
+     "cell_type": "code",
+     "collapsed": false,
+     "input": [
+      "data = None\n",
+      "with open('../data/products.json') as f:\n",
+      "    data = json.load(f)"
+     ],
+     "language": "python",
+     "metadata": {},
+     "outputs": [],
+     "prompt_number": 2
+    },
+    {
+     "cell_type": "code",
+     "collapsed": false,
+     "input": [
+      "data.keys()"
+     ],
+     "language": "python",
+     "metadata": {},
+     "outputs": [
+      {
+       "metadata": {},
+       "output_type": "pyout",
+       "prompt_number": 5,
+       "text": [
+        "[u'Home Appliances', u'Electronics', u'Fashion']"
+       ]
+      }
+     ],
+     "prompt_number": 5
+    },
+    {
+     "cell_type": "code",
+     "collapsed": false,
+     "input": [
+      "for v in data.itervalues():\n",
+      "    print v['weight']"
+     ],
+     "language": "python",
+     "metadata": {},
+     "outputs": [
+      {
+       "output_type": "stream",
+       "stream": "stdout",
+       "text": [
+        "0.2\n",
+        "0.5\n",
+        "0.3\n"
+       ]
+      }
+     ],
+     "prompt_number": 11
+    },
+    {
+     "cell_type": "code",
+     "collapsed": false,
+     "input": [
+      "def sumWeights(h):\n",
+      "    wts = {}\n",
+      "    w = 0\n",
+      "    for k, v in h.iteritems():\n",
+      "        w += v['weight']\n",
+      "        wts[k] = v['weight']\n",
+      "    print \"Weight = \", w\n",
+      "    print wts"
+     ],
+     "language": "python",
+     "metadata": {},
+     "outputs": [],
+     "prompt_number": 24
+    },
+    {
+     "cell_type": "code",
+     "collapsed": false,
+     "input": [
+      "sumWeights(data)"
+     ],
+     "language": "python",
+     "metadata": {},
+     "outputs": [
+      {
+       "output_type": "stream",
+       "stream": "stdout",
+       "text": [
+        "Weight =  1.0\n",
+        "{u'Home Appliances': 0.2, u'Electronics': 0.5, u'Fashion': 0.3}\n"
+       ]
+      }
+     ],
+     "prompt_number": 25
+    },
+    {
+     "cell_type": "code",
+     "collapsed": false,
+     "input": [
+      "for cat in data:\n",
+      "    sumWeights(data[cat]['subcategories'])"
+     ],
+     "language": "python",
+     "metadata": {},
+     "outputs": [
+      {
+       "output_type": "stream",
+       "stream": "stdout",
+       "text": [
+        "Weight =  1.0\n",
+        "{u'Irons': 0.5, u'Vacuum Cleaners': 0.3, u'Water Purifier': 0.2}\n",
+        "Weight =  1.0\n",
+        "{u'Mobile': 0.6, u'Laptop': 0.25, u'Tablets': 0.15}\n",
+        "Weight =  1.0\n",
+        "{u'Sunglasses': 0.1, u'Footwear': 0.6, u'Watches': 0.3}\n"
+       ]
+      }
+     ],
+     "prompt_number": 26
+    },
+    {
+     "cell_type": "code",
+     "collapsed": false,
+     "input": [
+      "for cat in data:\n",
+      "    for subcat in data[cat]['subcategories']:\n",
+      "        print subcat\n",
+      "        sumWeights(data[cat]['subcategories'][subcat]['brands'])"
+     ],
+     "language": "python",
+     "metadata": {},
+     "outputs": [
+      {
+       "output_type": "stream",
+       "stream": "stdout",
+       "text": [
+        "Irons\n",
+        "Weight =  1.0\n",
+        "{u'Morphy Richards': 0.3, u'Bajaj': 0.45, u'Havells': 0.25}\n",
+        "Vacuum Cleaners\n",
+        "Weight =  1.0\n",
+        "{u'Phillips': 0.3, u'Eureka Forbes': 0.4, u'Bosch': 0.3}\n",
+        "Water Purifier\n",
+        "Weight =  1\n",
+        "{u'Kent': 1}\n",
+        "Mobile\n",
+        "Weight =  1.0\n",
+        "{u'Sony': 0.14, u'Nokia': 0.16, u'Micromax': 0.17, u'Motorola': 0.13, u'Samsung': 0.4}\n",
+        "Laptop\n",
+        "Weight =  1.0\n",
+        "{u'Lenovo': 0.3, u'Apple': 0.1, u'Dell': 0.6}\n",
+        "Tablets\n",
+        "Weight =  1.0\n",
+        "{u'Asus': 0.35, u'Apple': 0.2, u'Samsung': 0.45}\n",
+        "Sunglasses\n",
+        "Weight =  1.0\n",
+        "{u'RayBan': 0.33, u'Oakley': 0.2, u'Fastrack': 0.47}\n",
+        "Footwear\n",
+        "Weight =  1.0\n",
+        "{u'Reebok': 0.35, u'Puma': 0.15, u'Adidas': 0.26, u'Nike': 0.24}\n",
+        "Watches\n",
+        "Weight =  1.0\n",
+        "{u'Casio': 0.12, u'Titan': 0.35, u'Fossil': 0.13, u'Fastrack': 0.4}\n"
+       ]
+      }
+     ],
+     "prompt_number": 29
+    },
+    {
+     "cell_type": "code",
+     "collapsed": false,
+     "input": [
+      "for cat in data.itervalues():\n",
+      "    for subcat in cat['subcategories'].itervalues():\n",
+      "        for brand, val in subcat['brands'].iteritems():\n",
+      "            print brand            \n",
+      "            sumWeights(val['products'])"
+     ],
+     "language": "python",
+     "metadata": {},
+     "outputs": [
+      {
+       "output_type": "stream",
+       "stream": "stdout",
+       "text": [
+        "Morphy Richards\n",
+        "Weight =  1.0\n",
+        "{u'Mirage 200': 0.37, u'Wave 400': 0.15, u'Senora': 0.12, u'Cruiser': 0.08, u'Inspira Iron': 0.28}\n",
+        "Bajaj\n",
+        "Weight =  1.0\n",
+        "{u'MX 2': 0.22, u'Majesty Popular Plus': 0.17, u'Majesty DX 7': 0.38, u'Majesty MX 1': 0.23}\n",
+        "Havells\n",
+        "Weight =  1.0\n",
+        "{u'Admire': 0.29, u'Jio Heritage': 0.31, u'Aspire': 0.15, u'Adore': 0.25}\n",
+        "Phillips\n",
+        "Weight =  1.0\n",
+        "{u'FC 8088': 0.3, u'FC 6130': 0.55, u'FC 8800 Robotic': 0.15}\n",
+        "Eureka Forbes\n",
+        "Weight =  1.0\n",
+        "{u'Easy Clean Plus': 0.25, u'Trendy Xeon': 0.15, u'Trendy Steel': 0.2, u'Trendy Nano': 0.4}\n",
+        "Bosch\n",
+        "Weight =  1.0\n",
+        "{u'AQT 37-13 Plus': 0.23, u'Skil': 0.47, u'Aquatak 100': 0.3}\n",
+        "Kent\n",
+        "Weight =  1.0\n",
+        "{u'Gold Optimal 10L': 0.53, u'Gold Star 22L': 0.2, u'Gold 20L': 0.27}\n",
+        "Sony\n",
+        "Weight =  1.0\n",
+        "{u'Xperia C': 0.4, u'Xperia Z': 0.1, u'Xperia E': 0.5}\n",
+        "Nokia\n",
+        "Weight =  1.0\n",
+        "{u'Lumia 525': 0.2, u'Lumia 1320': 0.1, u'Lumia 520': 0.4, u'Asha 502': 0.08, u'Asha 210': 0.07, u'Lumia 625': 0.15}\n",
+        "Motorola\n",
+        "Weight =  1.0\n",
+        "{u'Moto E': 0.55, u'Moto G': 0.35, u'Moto X': 0.1}\n",
+        "Micromax\n",
+        "Weight =  1.0\n",
+        "{u'Canvas Turbo': 0.25, u'Canvas Doodle': 0.6, u'MAd A94': 0.15}\n",
+        "Samsung\n",
+        "Weight =  1.0\n",
+        "{u'Galaxy Note 3': 0.04, u'Galaxy Star': 0.25, u'Galaxy Core': 0.1, u'Galaxy S Duos': 0.3, u'Galaxy Grand 2': 0.15, u'Galaxy S4': 0.15, u'Galaxy S5': 0.01}\n",
+        "Lenovo\n",
+        "Weight =  1.0\n",
+        "{u'Essential G510': 0.25, u'Ideapad S510p': 0.32, u'Essential': 0.33, u'Ideapad Y510': 0.1}\n",
+        "Apple\n",
+        "Weight =  1.0\n",
+        "{u'MacBook Pro': 0.4, u'MacBook Air': 0.6}\n",
+        "Dell\n",
+        "Weight =  1.0\n",
+        "{u'Vostro 2520': 0.23, u'Inspiron 15 3521': 0.27, u'Vostro 2420': 0.32, u'Inspiron 15R 5537': 0.18}\n",
+        "Asus\n",
+        "Weight =  1.0\n",
+        "{u'Google Nexus 7C': 0.7, u'Eee pad': 0.1, u'Fonepad 7': 0.2}\n",
+        "Apple\n",
+        "Weight =  1.0\n",
+        "{u'16GB iPad Mini': 0.32, u'32GB iPad Mini': 0.13, u'32GB iPad Air': 0.38, u'16GB iPad Air': 0.17}\n",
+        "Samsung\n",
+        "Weight =  1.0\n",
+        "{u'Galaxy Tab3 Neo': 0.22, u'Galaxy Note Pro': 0.1, u'Galaxy Tab3 T211': 0.28, u'Galaxy Tab 311': 0.23, u'Galaxy Note': 0.17}\n",
+        "RayBan\n",
+        "Weight =  1.0\n",
+        "{u'Oval': 0.15, u'Wayfarer': 0.45, u'Aviator': 0.4}\n",
+        "Oakley\n",
+        "Weight =  1.0\n",
+        "{u'Oval': 0.08, u'Wayfarer': 0.3, u'Rectangular': 0.27, u'Aviator': 0.12, u'Sports': 0.23}\n",
+        "Fastrack\n",
+        "Weight =  1.0\n",
+        "{u'Wayfarer': 0.25, u'Aviator': 0.35, u'Sports': 0.4}\n",
+        "Reebok\n",
+        "Weight =  1.0\n",
+        "{u'Fuel Motion': 0.37, u'Zquick TR': 0.08, u'Top Speed': 0.28, u'Realflux Run': 0.12, u'Realflux Optimal': 0.15}\n",
+        "Puma\n",
+        "Weight =  1.0\n",
+        "{u'Mobium Elite': 0.23, u'Strike Fashion': 0.23, u'Running Shoes': 0.37, u'Faas Lite': 0.17}\n",
+        "Adidas\n",
+        "Weight =  1.0\n",
+        "{u'Phantom': 0.15, u'Falcon Elite': 0.27, u'Running Shoes': 0.33, u'Impulse': 0.25}\n",
+        "Nike\n",
+        "Weight =  1.0\n",
+        "{u'Flex Supreme': 0.31, u'Absolute Running Shoes': 0.29, u'Running Shoes': 0.25, u'Dual Fusion Retro': 0.15}\n",
+        "Casio\n",
+        "Weight =  1.0\n",
+        "{u'Edifice Analog-Digital Watch': 0.38, u'Standard Analog-Digital Watch': 0.22, u'Pro Track Digital Watch': 0.23, u'Classic Analog Watch': 0.17}\n",
+        "Titan\n",
+        "Weight =  1.0\n",
+        "{u'Automatic Analog Watch': 0.2, u'Karishma Analog Watch': 0.25, u'Octane Analog Watch': 0.4, u'Purple Analog Watch': 0.15}\n",
+        "Fossil\n",
+        "Weight =  1.0\n",
+        "{u'Grant Analog Watch': 0.4, u'Nate Analog Watch': 0.15, u'Decker Analog Watch': 0.25, u'Dylan Analog Watch': 0.2}\n",
+        "Fastrack\n",
+        "Weight =  1.0\n",
+        "{u'Beach Analog Watch': 0.19, u'Sports Analog Watch': 0.21, u'Basics Analog Watch': 0.23, u'Party Analog Watch': 0.37}\n"
+       ]
+      }
+     ],
+     "prompt_number": 35
+    },
+    {
+     "cell_type": "code",
+     "collapsed": false,
+     "input": [
+      "import random\n",
+      "\n",
+      "## functions to pick random values from generic data structures\n",
+      "\n",
+      "# Pick random values from dict, use weights if key is provided\n",
+      "def weightedPick(d, key=None):\n",
+      "  total = 0.0\n",
+      "  for v in d.itervalues():\n",
+      "    if key:\n",
+      "      total += v[key]\n",
+      "    else:\n",
+      "      total += v\n",
+      "  r = random.uniform(0, total)\n",
+      "  s = 0.0\n",
+      "  for k,v in d.iteritems():\n",
+      "    if key:\n",
+      "      s += v[key]\n",
+      "    else:\n",
+      "      s += v\n",
+      "    if r < s: return k\n",
+      "  return k\n",
+      "\n",
+      "# Pick random array element (weighted by values)\n",
+      "def weightedArrPick(arr):\n",
+      "  total = sum(arr)\n",
+      "  r = random.uniform(0, total)\n",
+      "  s = 0.0\n",
+      "  for i, val in enumerate(arr):\n",
+      "    s += val\n",
+      "    if r < s:\n",
+      "      return i\n",
+      "  return (len(arr) - 1)\n"
+     ],
+     "language": "python",
+     "metadata": {},
+     "outputs": [],
+     "prompt_number": 37
+    },
+    {
+     "cell_type": "code",
+     "collapsed": false,
+     "input": [
+      "weightedPick(data, key=\"weight\")"
+     ],
+     "language": "python",
+     "metadata": {},
+     "outputs": [
+      {
+       "metadata": {},
+       "output_type": "pyout",
+       "prompt_number": 51,
+       "text": [
+        "u'Electronics'"
+       ]
+      }
+     ],
+     "prompt_number": 51
+    },
+    {
+     "cell_type": "code",
+     "collapsed": false,
+     "input": [
+      "weightedPick(data['Electronics']['subcategories'], key=\"weight\")"
+     ],
+     "language": "python",
+     "metadata": {},
+     "outputs": [
+      {
+       "metadata": {},
+       "output_type": "pyout",
+       "prompt_number": 63,
+       "text": [
+        "u'Tablets'"
+       ]
+      }
+     ],
+     "prompt_number": 63
+    },
+    {
+     "cell_type": "code",
+     "collapsed": false,
+     "input": [
+      "l=[]\n",
+      "for cat in data.itervalues():\n",
+      "    for subcat in cat['subcategories'].itervalues():\n",
+      "        for brand in subcat['brands'].itervalues():\n",
+      "            l.extend(brand['products'].keys())"
+     ],
+     "language": "python",
+     "metadata": {},
+     "outputs": [],
+     "prompt_number": 6
+    },
+    {
+     "cell_type": "code",
+     "collapsed": false,
+     "input": [
+      "l"
+     ],
+     "language": "python",
+     "metadata": {},
+     "outputs": [
+      {
+       "metadata": {},
+       "output_type": "pyout",
+       "prompt_number": 7,
+       "text": [
+        "[u'Mirage 200',\n",
+        " u'Senora',\n",
+        " u'Inspira Iron',\n",
+        " u'Cruiser',\n",
+        " u'Wave 400',\n",
+        " u'MX 2',\n",
+        " u'Majesty Popular Plus',\n",
+        " u'Majesty DX 7',\n",
+        " u'Majesty MX 1',\n",
+        " u'Admire',\n",
+        " u'Jio Heritage',\n",
+        " u'Aspire',\n",
+        " u'Adore',\n",
+        " u'FC 8800 Robotic',\n",
+        " u'FC 6130',\n",
+        " u'FC 8088',\n",
+        " u'Easy Clean Plus',\n",
+        " u'Trendy Steel',\n",
+        " u'Trendy Nano',\n",
+        " u'Trendy Xeon',\n",
+        " u'AQT 37-13 Plus',\n",
+        " u'Skil',\n",
+        " u'Aquatak 100',\n",
+        " u'Gold Optimal 10L',\n",
+        " u'Gold Star 22L',\n",
+        " u'Gold 20L',\n",
+        " u'Xperia C',\n",
+        " u'Xperia Z',\n",
+        " u'Xperia E',\n",
+        " u'Lumia 525',\n",
+        " u'Lumia 1320',\n",
+        " u'Lumia 520',\n",
+        " u'Asha 502',\n",
+        " u'Asha 210',\n",
+        " u'Lumia 625',\n",
+        " u'Moto E',\n",
+        " u'Moto G',\n",
+        " u'Moto X',\n",
+        " u'Canvas Turbo',\n",
+        " u'Canvas Doodle',\n",
+        " u'MAd A94',\n",
+        " u'Galaxy Note 3',\n",
+        " u'Galaxy Star',\n",
+        " u'Galaxy Core',\n",
+        " u'Galaxy S Duos',\n",
+        " u'Galaxy Grand 2',\n",
+        " u'Galaxy S4',\n",
+        " u'Galaxy S5',\n",
+        " u'Essential G510',\n",
+        " u'Ideapad S510p',\n",
+        " u'Essential',\n",
+        " u'Ideapad Y510',\n",
+        " u'MacBook Pro',\n",
+        " u'MacBook Air',\n",
+        " u'Vostro 2520',\n",
+        " u'Inspiron 15 3521',\n",
+        " u'Vostro 2420',\n",
+        " u'Inspiron 15R 5537',\n",
+        " u'Google Nexus 7C',\n",
+        " u'Eee pad',\n",
+        " u'Fonepad 7',\n",
+        " u'16GB iPad Mini',\n",
+        " u'16GB iPad Air',\n",
+        " u'32GB iPad Air',\n",
+        " u'32GB iPad Mini',\n",
+        " u'Galaxy Tab3 Neo',\n",
+        " u'Galaxy Note Pro',\n",
+        " u'Galaxy Tab3 T211',\n",
+        " u'Galaxy Tab 311',\n",
+        " u'Galaxy Note',\n",
+        " u'Oval',\n",
+        " u'Wayfarer',\n",
+        " u'Aviator',\n",
+        " u'Oval',\n",
+        " u'Wayfarer',\n",
+        " u'Sports',\n",
+        " u'Aviator',\n",
+        " u'Rectangular',\n",
+        " u'Wayfarer',\n",
+        " u'Aviator',\n",
+        " u'Sports',\n",
+        " u'Realflux Run',\n",
+        " u'Fuel Motion',\n",
+        " u'Top Speed',\n",
+        " u'Zquick TR',\n",
+        " u'Realflux Optimal',\n",
+        " u'Mobium Elite',\n",
+        " u'Faas Lite',\n",
+        " u'Strike Fashion',\n",
+        " u'Running Shoes',\n",
+        " u'Phantom',\n",
+        " u'Falcon Elite',\n",
+        " u'Running Shoes',\n",
+        " u'Impulse',\n",
+        " u'Flex Supreme',\n",
+        " u'Absolute Running Shoes',\n",
+        " u'Running Shoes',\n",
+        " u'Dual Fusion Retro',\n",
+        " u'Edifice Analog-Digital Watch',\n",
+        " u'Pro Track Digital Watch',\n",
+        " u'Standard Analog-Digital Watch',\n",
+        " u'Classic Analog Watch',\n",
+        " u'Automatic Analog Watch',\n",
+        " u'Purple Analog Watch',\n",
+        " u'Octane Analog Watch',\n",
+        " u'Karishma Analog Watch',\n",
+        " u'Grant Analog Watch',\n",
+        " u'Nate Analog Watch',\n",
+        " u'Decker Analog Watch',\n",
+        " u'Dylan Analog Watch',\n",
+        " u'Beach Analog Watch',\n",
+        " u'Sports Analog Watch',\n",
+        " u'Basics Analog Watch',\n",
+        " u'Party Analog Watch']"
+       ]
+      }
+     ],
+     "prompt_number": 7
+    },
+    {
+     "cell_type": "code",
+     "collapsed": false,
+     "input": [
+      "ll = [len(v) for v in l]"
+     ],
+     "language": "python",
+     "metadata": {},
+     "outputs": [],
+     "prompt_number": 8
+    },
+    {
+     "cell_type": "code",
+     "collapsed": false,
+     "input": [
+      "max(ll)"
+     ],
+     "language": "python",
+     "metadata": {},
+     "outputs": [
+      {
+       "metadata": {},
+       "output_type": "pyout",
+       "prompt_number": 10,
+       "text": [
+        "29"
+       ]
+      }
+     ],
+     "prompt_number": 10
+    },
+    {
+     "cell_type": "code",
+     "collapsed": false,
+     "input": [],
+     "language": "python",
+     "metadata": {},
+     "outputs": []
+    }
+   ],
+   "metadata": {}
+  }
+ ]
+}
